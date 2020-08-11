@@ -1,0 +1,35 @@
+{
+  "name": "@mgtd/remark-shiki",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enter-tainer/remark-shiki.git"
+  },
+  "keywords": [
+    "shiki"
+  ],
+  "author": "mgt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Enter-tainer/remark-shiki/issues"
+  },
+  "homepage": "https://github.com/Enter-tainer/remark-shiki#readme",
+  "dependencies": {
+    "@mgtd/shiki": "^1.0.0",
+    "lodash": "^4.17.19",
+    "rehype-raw": "^4.0.2",
+    "shiki-languages": "^0.1.6",
+    "unist-util-visit": "^2.0.3"
+  },
+  "devDependencies": {
+    "rehype-stringify": "^8.0.0",
+    "remark-parse": "^8.0.3",
+    "remark-rehype": "^7.0.0",
+    "unified": "^9.1.0"
+  }
+}

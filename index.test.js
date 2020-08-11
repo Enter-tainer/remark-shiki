@@ -1,0 +1,18 @@
+var unified = require('unified')
+var markdown = require('remark-parse')
+var remark2rehype = require('remark-rehype')
+var html = require('rehype-stringify')
+const code = require('.')
+const fs = require('fs')
+var raw = require('rehype-raw')
+const data = fs.readFileSync('./README.md')
+var processor = unified()
+  .use(markdown, { commonmark: true })
+  .use(code)
+  .use(remark2rehype, { allowDangerousHtml: true })
+  .use(raw)
+  .use(html)
+
+processor.process(data).then(c => {
+  console.log(c.contents)
+})
