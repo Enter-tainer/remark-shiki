@@ -1,6 +1,6 @@
 {
   "name": "@mgtd/remark-shiki",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Enter-tainer/remark-shiki#readme",
   "dependencies": {
-    "@mgtd/shiki": "^1.0.3",
+    "@mgtd/shiki": "^1.0.4",
     "lodash": "^4.17.19",
     "rehype-raw": "^4.0.2",
     "shiki-languages": "^0.1.6",
