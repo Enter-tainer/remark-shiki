@@ -17,6 +17,7 @@ const languages = [
 module.exports = (options) => {
   const theme = options?.theme ? options.theme : 'light_plus'
   const semantic = typeof options.semantic !== 'undefined' ? options.semantic : true
+  const skipInline = options?.skipInline
   return async tree => {
     const highlighter = await shiki.getHighlighter({
       theme,
@@ -28,23 +29,23 @@ module.exports = (options) => {
       node.children = undefined
       try {
         node.value = await highlight(node, CLASS_BLOCK, highlighter, semantic ? node.lang === 'cpp' : false)
-        // console.log(node.value)
       } catch (e) {
         console.log(e)
-        node.value = ERROR_MESSAGE
       }
+      node.value = node.value.replace('<pre class="shiki"', `<pre class="shiki lang-${node.lang}"`)
       node.lang = node.meta = undefined
     }
     const works = []
     visit(tree, 'code', (node) => { works.push(visitor(node)) })
     await Promise.all(works)
-    if (!options?.skipInline) {
+    if (!skipInline) {
       visit(tree, 'inlineCode', async node => {
         node.type = 'html'
         try {
           node.value = await highlight(node, CLASS_INLINE, highlighter, false)
         } catch (e) {
-          node.value = ERROR_MESSAGE
+          // node.value = ERROR_MESSAGE
+          console.log(e)
         }
       })
     }
@@ -59,5 +60,5 @@ function highlight ({ value, lang }, cls, highlighter, semantic = false) {
   }
 
   // Fallback for unknown languages.
-  return `<code class="${cls}">${_.escape(value)}</code>`
+  return `<pre class="${cls}"><code>${_.escape(value)}</code></pre>`
 }
