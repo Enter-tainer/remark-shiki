@@ -14,6 +14,10 @@ const languages = [
   ...otherLangIds
 ]
 
+function wrapWithDiv(html, lang) {
+  return `<div class="gatsby-highlight" data-language="${lang}">${html}</div>`
+}
+
 module.exports = (options) => {
   const theme = options?.theme ? options.theme : 'light_plus'
   const semantic = typeof options.semantic !== 'undefined' ? options.semantic : true
@@ -33,6 +37,7 @@ module.exports = (options) => {
         console.log(e)
       }
       node.value = node.value.replace('<pre class="shiki"', `<pre class="shiki lang-${node.lang}"`)
+      node.value = wrapWithDiv(node.value, node.lang)
       node.lang = node.meta = undefined
     }
     const works = []
