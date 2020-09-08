@@ -19,9 +19,9 @@ function wrapWithDiv(html, lang) {
 }
 
 module.exports = (options) => {
-  const theme = options?.theme ? options.theme : 'light_plus'
+  const theme = options.theme ? options.theme : 'light_plus'
   const semantic = typeof options.semantic !== 'undefined' ? options.semantic : true
-  const skipInline = options?.skipInline
+  const skipInline = options.skipInline ? options.skipInline : true
   return async tree => {
     const highlighter = await shiki.getHighlighter({
       theme,
