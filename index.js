@@ -16,7 +16,7 @@ const languages = [
 
 module.exports = (options) => {
   const theme = options?.theme ? options.theme : 'light_plus'
-  const semantic = options?.semantic || true
+  const semantic = typeof options.semantic !== 'undefined' ? options.semantic : true
   return async tree => {
     const highlighter = await shiki.getHighlighter({
       theme,
