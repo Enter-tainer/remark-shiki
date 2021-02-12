@@ -1,5 +1,5 @@
-const shiki = require('@mgtd/shiki')
-const { commonLangIds, commonLangAliases, otherLangIds } = require('shiki-languages')
+const shiki = require('shiki')
+const languages = shiki.BUNDLED_LANGUAGES
 const visit = require('unist-util-visit')
 const _ = require('lodash')
 
@@ -8,11 +8,6 @@ const CLASS_INLINE = 'shiki-inline'
 
 const ERROR_MESSAGE = '<code>ERROR Rendering Code Block</code>'
 
-const languages = [
-  ...commonLangIds,
-  ...commonLangAliases,
-  ...otherLangIds
-]
 
 function wrapWithDiv(html, lang) {
   return `<div class="gatsby-highlight" data-language="${lang}">${html}</div>`
@@ -20,12 +15,11 @@ function wrapWithDiv(html, lang) {
 
 module.exports = (options) => {
   const theme = options.theme ? options.theme : 'light_plus'
-  const semantic = typeof options.semantic !== 'undefined' ? options.semantic : true
+  const semantic = typeof options.semantic !== 'undefined' ? options.semantic : false
   const skipInline = options.skipInline ? options.skipInline : true
   return async tree => {
     const highlighter = await shiki.getHighlighter({
       theme,
-      langs: languages
     })
 
     const visitor = async (node) => {
@@ -57,11 +51,13 @@ module.exports = (options) => {
   }
 }
 
-function highlight ({ value, lang }, cls, highlighter, semantic = false) {
-  const index = languages.findIndex((x) => x === lang)
+function highlight({ value, lang }, cls, highlighter, semantic = false) {
+  function resolveLang(lang) {
+    return languages.find(l => l.id === lang || l.aliases?.includes(lang))
+  }
 
-  if (index >= 0) {
-    return highlighter.codeToHtml(value, lang, semantic)
+  if (resolveLang(lang)) {
+    return highlighter.codeToHtml(value, lang)
   }
 
   // Fallback for unknown languages.

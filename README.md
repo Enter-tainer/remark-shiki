@@ -200,3 +200,7 @@ const languages = [
       \end{algorithmic}
       \end{algorithm}
 ```
+
+```latex
+接下来的 $m$ 行中的第 $i$ 行包含两个正整数 $l_i$ 和 $r_i$ ($1\le l_i\le r_i\le n$)，表示第 $i$ 次操作在区间 $[l_i,r_i]$ 上进行。
+```
