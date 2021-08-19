@@ -2,7 +2,8 @@ import { unified } from 'unified';
 import markdown from 'remark-parse';
 import remark2rehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
-import remarkShiki from '../index.js';
+import remarkShikiIndex from '../index.js';
+const { remarkShiki } = remarkShikiIndex;
 import fs from 'fs';
 import raw from 'rehype-raw';
 

@@ -22,12 +22,10 @@
 	},
 	"homepage": "https://github.com/Enter-tainer/remark-shiki#readme",
 	"dependencies": {
-		"lodash": "^4.17.20",
 		"shiki": "^0.9.6",
 		"unist-util-visit": "^2.0.3"
 	},
 	"devDependencies": {
-		"@types/lodash": "^4.14.172",
 		"@types/node": "^16.6.2",
 		"mdast": "^3.0.0",
 		"rehype-raw": "^4.0.2",

@@ -1,5 +1,4 @@
 import { BUNDLED_LANGUAGES as languages, getHighlighter, Highlighter } from "shiki";
-import { escape } from "lodash";
 import { Plugin, Transformer } from "unified";
 import { Code, HTML, Root } from "mdast"
 import visit from "unist-util-visit";
@@ -8,7 +7,7 @@ const blockClassName = 'shiki'
 const inlineClassName = 'shiki-inline'
 const errorHtml = '<code>ERROR Rendering Code Block</code>'
 
-interface RemarkShikiOptions {
+export interface RemarkShikiOptions {
 	theme: string;
 	semantic: boolean;
 	skipInline: boolean;
@@ -25,7 +24,7 @@ function isLanguageSupported(lang?: string): boolean {
 	return languages.find(l => l.id === lang || l.aliases?.includes(lang)) != undefined;
 }
 
-const remarkShiki: Plugin<[Partial<RemarkShikiOptions>?], Root> = function (options): Transformer<Root> {
+export const remarkShiki: Plugin<[Partial<RemarkShikiOptions>?], Root> = function (options): Transformer<Root> {
 	const opts: RemarkShikiOptions = {
 		theme: "light_plus",
 		semantic: false,
@@ -77,5 +76,3 @@ const remarkShiki: Plugin<[Partial<RemarkShikiOptions>?], Root> = function (opti
 			transform('inlineCode', highlighInlineCode);
 	}
 }
-
-export = remarkShiki;
