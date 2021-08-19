@@ -2,6 +2,7 @@ import { BUNDLED_LANGUAGES as languages, getHighlighter, Highlighter } from "shi
 import { Plugin, Transformer } from "unified";
 import { Code, HTML, Root } from "mdast"
 import visit from "unist-util-visit";
+import synchronize from "synchronized-promise";
 
 const blockClassName = 'shiki'
 const inlineClassName = 'shiki-inline'
@@ -11,6 +12,7 @@ export interface RemarkShikiOptions {
 	theme: string;
 	semantic: boolean;
 	skipInline: boolean;
+	forceSync: boolean;
 }
 
 function highlight(code: Code, highlighter: Highlighter): string {
@@ -29,12 +31,11 @@ export const remarkShiki: Plugin<[Partial<RemarkShikiOptions>?], Root> = functio
 		theme: "light_plus",
 		semantic: false,
 		skipInline: true,
+		forceSync: false,
 		...options
 	};
-	return async root => {
-		const highlighter = await getHighlighter({
-			theme: opts.theme
-		});
+	return root => {
+		let highlighter: Highlighter;
 		function highlightCode(code: Code): string {
 			let value = "";
 			try {
@@ -71,8 +72,22 @@ export const remarkShiki: Plugin<[Partial<RemarkShikiOptions>?], Root> = functio
 				return 'skip';
 			});
 		}
-		transform('code', highlightCode);
-		if (!opts.skipInline)
-			transform('inlineCode', highlighInlineCode);
+		function execute() {
+			transform('code', highlightCode);
+			if (!opts.skipInline)
+				transform('inlineCode', highlighInlineCode);
+		}
+		if (opts.forceSync) {
+			highlighter = synchronize(getHighlighter)({
+				theme: opts.theme
+			});
+			execute();
+		}
+		else {
+			getHighlighter({ theme: opts.theme }).then(h => {
+				highlighter = h;
+				execute();
+			});
+		}
 	}
 }
