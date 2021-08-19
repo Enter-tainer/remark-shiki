@@ -3,7 +3,9 @@ test/*.html
 
 # Build results
 *.js
+!/lib/**/*.js
 *.d.ts
+!/lib/**/*.d.ts
 *.js.map
 
 # Logs

@@ -2,7 +2,7 @@
 	"name": "@mgtd/remark-shiki",
 	"version": "2.1.0",
 	"description": "",
-	"main": "index.js",
+	"main": "lib/index.js",
 	"scripts": {
 		"test": "tsc && node test/remark-shiki.test.mjs",
 		"prepublishOnly": "tsc"
