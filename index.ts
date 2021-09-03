@@ -3,6 +3,13 @@ import { Plugin, Transformer } from "unified";
 import { Code, HTML, Root } from "mdast"
 import visit from "unist-util-visit";
 
+function escapeHTML(s: string): string {
+	return s.replace(/&/g, '&amp;')
+		.replace(/"/g, '&quot;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;');
+}
+
 const blockClassName = 'shiki'
 const inlineClassName = 'shiki-inline'
 const errorHtml = '<code>ERROR Rendering Code Block</code>'
@@ -18,7 +25,7 @@ function highlight(code: Code, highlighter: Highlighter): string {
 		const html = highlighter.codeToHtml(code.value, code.lang);
 		return `<div class="gatsby-highlight" data-language="${code.lang}">${html}</div>`;
 	} else {
-		return `<div class="gatsby-highlight" data-language="${code.lang}"><pre class="shiki" style="background-color: rgb(255, 255, 255);"><code class="language-${code.lang}">${code.value}</code></pre></div>`
+		return `<div class="gatsby-highlight" data-language="${code.lang}"><pre class="shiki" style="background-color: var(--shiki-color-background);"><code class="language-${code.lang}">${escapeHTML(code.value)}</code></pre></div>`
 	}
 }
 
@@ -30,7 +37,7 @@ function isLanguageSupported(lang?: string): boolean {
 
 export const remarkShiki: Plugin<[Partial<RemarkShikiOptions>?], Root> = function (options): Transformer<Root> {
 	const opts: RemarkShikiOptions = {
-		theme: "light-plus",
+		theme: 'css-variables',
 		semantic: false,
 		skipInline: true,
 		...options

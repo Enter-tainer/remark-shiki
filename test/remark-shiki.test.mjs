@@ -10,7 +10,7 @@ import raw from 'rehype-raw';
 const data = fs.readFileSync('README.md')
 var processor = unified()
 	.use(markdown, { commonmark: true })
-	.use(remarkShiki, { semantic: false, theme: 'dark-plus' })
+	.use(remarkShiki, { semantic: false, theme: 'css-variables' })
 	.use(remark2rehype, { allowDangerousHtml: true })
 	.use(raw)
 	.use(rehypeStringify);

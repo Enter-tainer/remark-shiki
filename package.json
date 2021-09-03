@@ -1,6 +1,6 @@
 {
 	"name": "@mgtd/remark-shiki",
-	"version": "2.1.1",
+	"version": "2.2.0",
 	"description": "",
 	"main": "lib/index.js",
 	"scripts": {
@@ -22,7 +22,7 @@
 	},
 	"homepage": "https://github.com/Enter-tainer/remark-shiki#readme",
 	"dependencies": {
-		"shiki": "^0.9.6",
+		"shiki": "^0.9.10",
 		"unist-util-visit": "^2.0.3"
 	},
 	"devDependencies": {
