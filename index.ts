@@ -14,8 +14,12 @@ export interface RemarkShikiOptions {
 }
 
 function highlight(code: Code, highlighter: Highlighter): string {
-	const html = highlighter.codeToHtml(code.value, code.lang);
-	return `<div class="gatsby-highlight" data-language="${code.lang}">${html}</div>`;
+	if (isLanguageSupported(code.lang)) {
+		const html = highlighter.codeToHtml(code.value, code.lang);
+		return `<div class="gatsby-highlight" data-language="${code.lang}">${html}</div>`;
+	} else {
+		return `<div class="gatsby-highlight" data-language="${code.lang}"><pre class="shiki" style="background-color: rgb(255, 255, 255);"><code class="language-${code.lang}">${code.value}</code></pre></div>`
+	}
 }
 
 function isLanguageSupported(lang?: string): boolean {
@@ -26,7 +30,7 @@ function isLanguageSupported(lang?: string): boolean {
 
 export const remarkShiki: Plugin<[Partial<RemarkShikiOptions>?], Root> = function (options): Transformer<Root> {
 	const opts: RemarkShikiOptions = {
-		theme: "light_plus",
+		theme: "light-plus",
 		semantic: false,
 		skipInline: true,
 		...options
@@ -56,8 +60,6 @@ export const remarkShiki: Plugin<[Partial<RemarkShikiOptions>?], Root> = functio
 		function transform(tag: string, highlightFunc: (code: Code) => string) {
 			visit(root, tag as any, (code: Code, _, parent) => {
 				// Skip if the languaged is not supported
-				if (!isLanguageSupported(code.lang))
-					return "skip"
 				const html: HTML = {
 					type: 'html',
 					value: highlightFunc(code)

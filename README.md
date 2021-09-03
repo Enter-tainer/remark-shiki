@@ -6,7 +6,11 @@ shiki with semantic highlighting support
 
 see `index.test.js`
 
-```cpp
+```wtf
+testetstst
+```
+
+``` cpp
 #include <cstdio>
 const int N = 100005;
 int rt, tot, fa[N], ch[N][2], val[N], cnt[N], sz[N];
