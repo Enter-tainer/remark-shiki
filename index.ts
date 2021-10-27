@@ -21,12 +21,28 @@ export interface RemarkShikiOptions {
 }
 
 function highlight(code: Code, highlighter: Highlighter): string {
+	if (code.lang)
+		code.lang = normalizeLanguage(code.lang)
 	if (isLanguageSupported(code.lang)) {
 		const html = highlighter.codeToHtml(code.value, code.lang);
 		return `<div class="gatsby-highlight" data-language="${code.lang}">${html}</div>`;
 	} else {
 		return `<div class="gatsby-highlight" data-language="${code.lang}"><pre class="shiki" style="background-color: var(--shiki-color-background);"><code class="language-${code.lang}">${escapeHTML(code.value)}</code></pre></div>`
 	}
+}
+
+function normalizeLanguage(lang: string): string {
+	const aliases = {
+		cpp: ['cxx', 'c++', 'cc'],
+		python: ['py', 'python', 'python3', 'python2', 'py2', 'py3'],
+		rust: ['rs', 'rust'],
+	}
+	for (const [key, alias] of Object.entries(aliases)) {
+		if (alias.find(t => t === lang)) {
+			return key
+		}
+	}
+	return lang
 }
 
 function isLanguageSupported(lang?: string): boolean {
@@ -66,7 +82,7 @@ export const remarkShiki: Plugin<[Partial<RemarkShikiOptions>?], Root> = functio
 		}
 		function transform(tag: string, highlightFunc: (code: Code) => string) {
 			visit(root, tag as any, (code: Code, _, parent) => {
-				// Skip if the languaged is not supported
+				// Skip if the language is not supported
 				const html: HTML = {
 					type: 'html',
 					value: highlightFunc(code)
